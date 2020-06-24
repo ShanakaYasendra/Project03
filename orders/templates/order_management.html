@@ -2,18 +2,32 @@
 {% block body%}
 {% load static %}
 
-<div id='my_orders_container' class='w-50 mx-auto'>
-    <div class=' text-left pr-3'>
-        <ul >
+<div id='my_orders_container' class="list-group text-center"'>
+  
+        <table id="ord_mag" >
+            <tr>
+                <th>Order No</th>
+                <th>user</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
             {% for row in item%}
-            <li class='p-2' >
+              <tr>
+                    <td>{{row.order_number}}</td>
+                    <td>{{row.username}}</td>
+                    <td>{{row.status}}</td>
+                    <td> <a href="{% url 'complete_order' row.username row.order_number  %}"><span class='float-right mx-2 p-1 bg-info rounded text-white'>Complete order</span></a></td>
+               </tr>
+            <!--li class='p-2' >
                
                 <span>Order no: {{row.order_number}} by {{row.username}}</span>
-                <a href="{% url 'complete_order' row.username row.order_number  %}"><span class='float-right mx-2 p-1 bg-info rounded text-white'>Complete order</span></a>
+               
                 <span class='float-right'>Status: <span class='text-warning'>{{row.status}}</span></span>
-            </li>
+            </li-->
+        
             {% endfor %}
-        </ul>
-    </div>
+        </table>
+
+</div>
 
     {% endblock %}

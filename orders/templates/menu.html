@@ -5,7 +5,7 @@
 
     <table class='table-small w-50 mx-auto text-center' style="background: black;" >
         
-        <caption style='caption-side:top;color:white;font-size: 30px;text-align: center ; '><div style="background: black;">{{Active_category}}</div></caption>
+        <caption style='caption-side:top;color:white;font-size: 30px;text-align: center ; '><div style="background: black;text-align: center ;">{{Active_category}}</div></caption>
     
         {% if Columns == 3 %}
         <thead class='thead-light'>
@@ -24,12 +24,12 @@
 
                
 
-                {% if row.small == None %}
+                {% if row.small == 0 %}
                     <td></td>
                  
                     <td>${{row.large}}&nbsp;<a href="% url 'add' row.name row.price %"><img class='plus' src="{% static 'image/plus.png' %}"></a></td>
                 {% else %}
-                        {% if "topping" in row.name%}
+                        {% if "topping" in row.name or "item" in row.name %}
 
                             <td>${{row.small}}&nbsp;<a href="#myModal"  calss = "pizzatopping" data-value="{{ Active_category }}" data-toggle="modal" data-target="#myModal" data-name="{{row.name}}" data-price="{{row.small}}"><img class='plus' src="{% static 'image/plus.png' %}"></a></td>
 
@@ -59,7 +59,7 @@
             {% for row in Menu %} 
             <tr>
                 <td>{{row.name}}</td>
-                <td id="price">{{row.price}}&nbsp;<a href="{% url 'add' Active_category row.name row.price %}"><img class='plus' src="{% static 'plus.png' %}"></a></td>
+                <td id="price">{{row.price}}&nbsp;<a href="{% url 'add' Active_category row.name row.price %}"><img class='plus' src="{% static 'image/plus.png' %}"></a></td>
             </tr>
             {% endfor %}
         </tbody>
@@ -87,14 +87,7 @@
         {% endif %}
     </table>
 </div>
-{% if Active_category == 'Regular Pizza' or Active_category == 'Sicilian Pizza'  %}
-    <div class='text-center p-2'>
-        <h6 class='text-warning mx-auto'>Special: Double Cheese + Double Onions + Double Fresh Garlic</h6>
-{% endif %}
-{% if message %}
-        <h6 class='text-danger mx-auto '>sfgsg{{message}}</h6>
-    </div>
-{% endif %}
+
 
 
 
@@ -105,7 +98,7 @@
       <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
-                <h4 class="modal-title" name="modal-title" id="pizza_name"></h4>
+                <h4 class="modal-title" name="modal-title" id="pizza_name">Select Topping</h4>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 
                 </div>
@@ -184,6 +177,10 @@
                 </div>
             </div>
         </div>
+
+
+
+        
     <script>
         var id =null;
         var numb= null;
@@ -197,7 +194,7 @@
   
     console.log(id)
             checkNoTopping(id)
-        $('h4[name="modal-title"]').append(id);
+        //$('h4[name="modal-title"]').append(id);
         document.getElementById("pizzaname").innerHTML=id;
         document.getElementById("price").innerHTML=price;
         
@@ -207,15 +204,16 @@
         function   validatefunction(id){
             var check= document.querySelectorAll('input[name="topping"]:checked')
             console.log(check)
-            if(check.length != parseInt(numb))
+            if(check.length <= parseInt(numb))
             {
-                alert("Pleae select " +numb+"  topping")
-
-                return false;
+                return true;
+               
             
             }
             else{
-                return true;
+                alert("Pleae select " +numb+"  topping")
+
+                return false;
             }
         
         }

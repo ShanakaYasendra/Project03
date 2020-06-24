@@ -5,18 +5,32 @@
 
 <div id='checkout' class='list-group text-right '>
     <div id='category' class="list-group text-center">
-        <table>
+        <table id="reorder">
+            <tr>
+                
+                <td><h6 class='text-info mx-auto'>Item</h6></td>
+                <td><h6 class='text-info mx-auto'>Toppings</h6></td>
+                <td><h6 class='text-info mx-auto'>Price</h6></td>
+            </tr>
         {% for item in shoping_item %} 
         <tr>
-            <td><a href="{% url 'deleteItem' item.id %}" data-name="{{item.id}}"><img class='plus' src="{% static 'image/minus.png' %}"></a></td>
-       <td><div>{{item.Item}}</td><td>{{item.Price}}</td> 
+            
+       <td>{{item.Item}}</td>
+        <td>{{item.Topping}}</td>
+        <td>{{item.Price}}</td> 
        </tr>
         {% endfor %} 
         <tr>
-            <td><div>Total</div></td><td>{{shoping_total}}</td> 
+            <td></td>
+             <td><h6 class='text-warning mx-auto'>Total</h6></td>
+             <td><h6 class='text-danger mx-auto'>{{shoping_total}}</h6></td> 
+            </tr>
+            <tr>
+                <td><a href="{% url 'my_orders' %}"  class="btn btn-danger active" role="button" aria-pressed="true"> Close</a></td>
+               <td> <a href="{% url 'Reorder'%}"  class="btn btn-success  active" role="button" aria-pressed="true"> Reorder </a></td>
             </tr>
         </table>
-        <a href="{% url 'Reorder'%}"> Reorder </a>
-        <a href="{% url 'my_orders' %}" > Close</a>
+       
+       
     </div>
 {% endblock %}

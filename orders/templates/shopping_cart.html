@@ -7,12 +7,14 @@
     <div id='category' class="list-group text-center">
 
 
-        {% if message %}
-        <label for="error"> {{ message }}</label>
-        <label for="error"> Your Order Number is  {{ Order_No }}</label>
-    
-        {% endif %} 
-        <table>
+       
+        <table id="shopping_cart_summary">
+            <tr>
+                <td></td>
+                <td><h6 class='text-info mx-auto'>Item</h6></td>
+                <td><h6 class='text-info mx-auto'>Toppings</h6></td>
+                <td><h6 class='text-info mx-auto'>Price</h6></td>
+            </tr>
         {% for item in shoping_item %} 
         <tr>
             <td><a href="{% url 'deleteItem' item.id %}" data-name="{{item.id}}"><img class='plus' src="{% static 'image/minus.png' %}"></a></td>
@@ -20,9 +22,21 @@
        </tr>
         {% endfor %} 
         <tr>
-            <td><div>Total</div></td><td>{{shoping_total}}</td> 
+            <td></td>
+            <td><h6 class='text-warning mx-auto'>Total</h6></td><td></td><td><h6 class='text-danger mx-auto'>{{shoping_total}}</h6></td> 
             </tr>
+            <tr>
+                <td></td> <td><a href="{% url 'cancel_order'%}"class="btn btn-danger active" role="button" aria-pressed="true">Cancel Order </a></td><td></td>
+                <td><a href="{% url 'order'%}" class="btn btn-success  active" role="button" aria-pressed="true"> Place the Order </a></td></tr>
+            
+
+                {% if message %}
+                <div style="background: black;text-align: center ;">
+                    <label for="error"> {{ message }}</label>
+                    <label for="error"> Your Order Number is  {{ Order_No }}</label>
+                </div>
+                {% endif %} 
         </table>
-        <a href="{% url 'order'%}">Order </a>
+        
     </div>
 {% endblock %}

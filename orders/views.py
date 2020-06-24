@@ -197,10 +197,7 @@ def delete_item(request, rowId):
         deleteItem= Items.objects.filter(id=rowId)
         print(deleteItem)
         deleteItem.delete()
-    except Exception as e:
-        print(e)
-    try:
-        user= request.user
+  
         shoping_item= Items.objects.filter(username= user,OrderNo=counter.counter)
         shoping_tottal= Items.objects.filter(username= user,OrderNo=counter.counter).aggregate(Sum('Price')).values()
         shoping_tottal=(float([x for x in shoping_tottal][0]))
@@ -217,6 +214,24 @@ def delete_item(request, rowId):
     }
     return render(request,"shopping_cart.html",context)
 
+def cancel_order(request):
+    user= request.user
+    try:
+        delete_or= Items.objects.filter(username=user, OrderNo=counter.counter)
+        delete_or.delete()
+        shoping_item =None
+        shoping_tottal=None
+    except Exception as e: 
+       
+        print(e)
+    context={
+        "user": request.user,
+        "Category": Category.objects.all(),
+        "shoping_item": shoping_item,
+        "shoping_total": shoping_tottal,
+        "cart_count": 0
+    }
+    return render(request,"shopping_cart.html",context)
 
 def Place_Order(request):
     user= request.user
@@ -287,10 +302,8 @@ def view_order(request ,orderNo):
     print('hi')
     print(shoping_item)
     context={
-        "Category": Category.objects.all(),
-       
+        "Category": Category.objects.all(),     
         "cart_count": Items.objects.filter(username= user,OrderNo=counter.counter).count(),
-
         "shoping_item":shoping_item ,
         "shoping_total":shoping_total
     }
