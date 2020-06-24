@@ -1,0 +1,126 @@
+.top_bar
+{
+    width: 200px;
+    height:200px;
+
+}
+
+.banner{
+ color: rgba(15, 77, 170, 0.938);
+ font-style: italic;
+ font-feature-settings: "case";
+ font-stretch: expanded;
+ font: bolder;
+ font-family:  'Gothic' ;
+ text-shadow: 2px 2px 5px rgb(255, 0, 55);
+ font-size: 60px;
+ 
+
+}
+
+.navbar{
+    align-items: center;
+    align-content: center;
+}
+.nav-link{
+    align-content: center;
+    align-items: center;
+}
+
+body{
+  
+    width: 100vw;
+    height: 100vh;
+    
+    
+  
+    justify-content: center;
+    align-items: center;
+   background-image: url('../image/pizza.jpg');
+   background-size: cover;
+   background-position: center;
+   background-repeat: no-repeat;
+   background-attachment: fixed;
+   background-size: 100vw 100vh;
+
+}
+#deal{
+    height: 500px;
+    width: 500px;
+    position: relative;
+    margin: auto;
+    margin-top: 13%;
+    background-color: rgb(14, 13, 13);
+    text-align: center;
+}
+#deal::before{
+    content: "";
+    position: absolute;
+    top: 0;right: 0;;
+    border-bottom: 80px solid white;
+    border-right: 80px solid black;
+    width: 0;
+}
+
+.Deal_image{
+  
+    width: 400px;
+    height: 200px
+}
+h1{
+    text-align: center;
+    align-items: center;
+}
+
+.formcontain{
+    color: rgb(248, 246, 246);
+    border: 1px;
+    box-sizing: border-box;
+    border-style: solid;
+    border-color: aliceblue;
+    padding: 50px 60px;
+    margin-top: 10vh;
+    background-color: black;
+    opacity:1;
+    -webkit-box-shadow: -1px 0px 47px 10px rgba(0,0,0,0.75);
+    -moz-box-shadow: -1px 0px 47px 10px rgba(0,0,0,0.75);
+    box-shadow: -1px 0px 47px 10px rgba(243, 240, 240, 0.75);
+}
+.thead-light{
+    background-color: black;
+    color: blanchedalmond;
+}
+tbody{
+    background-color: black;
+    color: blanchedalmond;
+
+}
+table{
+    background-color: black;
+    color: blanchedalmond;
+}
+#orders{
+    margin-top: 10px;
+    width: 100%;
+}
+#orders th{
+    height: 50px;
+}
+ul{
+    align-items: left;
+}
+#topping_list_tb td input{
+    align-content: left;
+    
+}
+div{
+    text-align: left;
+}
+#order_summary th{
+    color: chartreuse;
+
+}
+#order_summary td{
+    color:red;
+
+}

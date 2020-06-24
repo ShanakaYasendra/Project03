@@ -1,0 +1,282 @@
+{% extends "layout.html" %}
+
+{% block body%}
+<div class='p-3'>
+
+    <table class='table-small w-50 mx-auto text-center' style="background: black;" >
+        
+        <caption style='caption-side:top;color:white;font-size: 30px;text-align: center ; '><div style="background: black;">{{Active_category}}</div></caption>
+    
+        {% if Columns == 3 %}
+        <thead class='thead-light'>
+            <tr >
+                <th>Name</th>
+                <th>Small</th>
+                <th>Large</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in Menu %} 
+            <tr id="{{row.name}}">
+                {% load static %}
+                <td>{{row.name}}</td>
+
+
+               
+
+                {% if row.small == None %}
+                    <td></td>
+                 
+                    <td>${{row.large}}&nbsp;<a href="% url 'add' row.name row.price %"><img class='plus' src="{% static 'image/plus.png' %}"></a></td>
+                {% else %}
+                        {% if "topping" in row.name%}
+
+                            <td>${{row.small}}&nbsp;<a href="#myModal"  calss = "pizzatopping" data-value="{{ Active_category }}" data-toggle="modal" data-target="#myModal" data-name="{{row.name}}" data-price="{{row.small}}"><img class='plus' src="{% static 'image/plus.png' %}"></a></td>
+
+                            <td>${{row.large}}&nbsp;<a href="#myModal" calss = "pizzatopping" data-value="{{ Active_category }}" data-toggle="modal" data-target="#myModal" data-name="{{row.name}}"data-price="{{row.large}}"><img class='plus' src="{% static 'image/plus.png' %}"></a></td>
+                          
+                            {%else%}
+
+                                <td>${{row.small}}&nbsp;<a href="{% url 'add' Active_category row.name row.small %}"><img class='plus' src="{% static 'image/plus.png' %}"></a></td>
+
+                                <td>${{row.large}}&nbsp;<a href="{% url 'add' Active_category row.name row.large %}" ><img class='plus' src="{% static 'image/plus.png' %}"></a></td>
+                        {% endif %}
+                        
+                {% endif %}
+              
+            </tr>
+            {% endfor %}
+        </tbody>
+        {% endif %}
+        {% if Columns == 2 %}
+        <thead class='thead-light'>
+            <tr >
+                <th>Name</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in Menu %} 
+            <tr>
+                <td>{{row.name}}</td>
+                <td id="price">{{row.price}}&nbsp;<a href="{% url 'add' Active_category row.name row.price %}"><img class='plus' src="{% static 'plus.png' %}"></a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        {% endif %}
+        {% if Columns == 1 %}
+        <thead class='thead-light'>
+            <tr >
+                <th>Name</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in Menu %} 
+            
+
+            
+            <tr>
+                <td>{{row.name}}
+                   
+            </tr>
+           
+           
+            {% endfor %}
+        </tbody>
+        {% endif %}
+    </table>
+</div>
+{% if Active_category == 'Regular Pizza' or Active_category == 'Sicilian Pizza'  %}
+    <div class='text-center p-2'>
+        <h6 class='text-warning mx-auto'>Special: Double Cheese + Double Onions + Double Fresh Garlic</h6>
+{% endif %}
+{% if message %}
+        <h6 class='text-danger mx-auto '>sfgsg{{message}}</h6>
+    </div>
+{% endif %}
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                <h4 class="modal-title" name="modal-title" id="pizza_name"></h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <form class='formcontain'action="#" method="POST"m>
+                            {% csrf_token %}
+                            <table>
+                                <tr>
+                                <td>
+                                    <fieldset class="form-group">
+
+                                        <div id="toppings">
+                                            <table id="topping_list_tb">
+                                                
+                                                {% for row in Topping %} 
+                                                <tr>
+                                                    <td><input type="checkbox" name ='topping' id="{{row}}" onclick="getValueofCheckBox()" value="{{row}}"> {{row}}</td>
+                                                </tr>
+                                                {% endfor %}
+                                            </table>
+                                        </div>
+                                    </fieldset>
+                                    <button type="submit" id="addCart" class="btn btn-moz btn-pop" onclick="request_access(this)">Add to cart</button>
+                        
+                                </td>
+                                <td>
+                                        <div id= "pizzaorder">
+                                            <table  id="order_summary">
+                                                <tr>
+                                                <th>
+                                                    <lable> Pizza Type</lable>
+                                                
+                                                </td>
+                                                <td>
+                                                    <lable id="Active_category_model">{{Active_category}}</lable>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                            <th>
+                                                <lable> Pizza</lable>
+                                            </td>
+                                                <td>
+                                                <lable id="pizzaname"></lable>
+                                            </th>
+                                                
+                                                </tr>
+                                                <tr>
+                                                    <th>
+                                                        Topping
+                                                    </th>
+                                                    <td>
+                                                        <label id="displayTopping"> </label>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th>
+                                                        Price
+                                                    </th>
+                                                    <td>
+                                                        <label id="price"> </label>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </form>
+                 </div>
+                </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">close</button>
+                    
+                    </div>
+                </div>
+            </div>
+        </div>
+    <script>
+        var id =null;
+        var numb= null;
+        
+      
+        var toppinglist=[];
+    $('a[href="#myModal"]').on('click',function(){
+    id = $(this).attr('data-name');
+    price=$(this).attr('data-price');
+    
+  
+    console.log(id)
+            checkNoTopping(id)
+        $('h4[name="modal-title"]').append(id);
+        document.getElementById("pizzaname").innerHTML=id;
+        document.getElementById("price").innerHTML=price;
+        
+        });
+
+
+        function   validatefunction(id){
+            var check= document.querySelectorAll('input[name="topping"]:checked')
+            console.log(check)
+            if(check.length != parseInt(numb))
+            {
+                alert("Pleae select " +numb+"  topping")
+
+                return false;
+            
+            }
+            else{
+                return true;
+            }
+        
+        }
+
+
+        function checkNoTopping(id){
+        
+        numb = id.match(/\d/g);
+        numb = numb.join("");
+        console.log(numb)
+    };
+
+    function getValueofCheckBox()
+    {
+        var selected= new Array();
+        var checkbox= document.getElementById("toppings");
+        var selectcheck= checkbox.getElementsByTagName("input");
+        
+        for(var i=0; i<selectcheck.length; i++)
+        {
+        
+            if(selectcheck[i].checked)
+            {
+                if(validatefunction()==true)
+                {
+                selected.push(selectcheck[i].value)
+                }
+                else{
+                    selectcheck[i].checked= false;
+                }
+            
+            
+            }
+        
+
+            
+        }
+        document.getElementById("displayTopping").innerHTML=selected
+    }
+        // call onload or in script segment below form
+       function request_access($this){
+        var Active_category= $("#Active_category_model").text();
+        console.log(Active_category)
+        var price= $("#price").text();
+        console.log(price)
+        var topping= $("#displayTopping").text();
+        console.log(topping)
+        console.log("button clicked");
+    
+
+        var request_data = $this.id;
+        console.log("data: " + request_data);
+        $.ajax({
+            url: '/orderpizza/'+Active_category+'/'+id+'/'+price+'/'+topping,
+            
+            success : function(data) {
+                console.log('request Success')
+            }
+        })
+
+    }
+    </script>
+
+{% endblock %}

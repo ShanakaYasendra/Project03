@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% block body%}
+{% load static %}
+
+
+<div id='checkout' class='list-group text-right '>
+    <div id='category' class="list-group text-center">
+
+
+        {% if message %}
+        <label for="error"> {{ message }}</label>
+        <label for="error"> Your Order Number is  {{ Order_No }}</label>
+    
+        {% endif %} 
+        <table>
+        {% for item in shoping_item %} 
+        <tr>
+            <td><a href="{% url 'deleteItem' item.id %}" data-name="{{item.id}}"><img class='plus' src="{% static 'image/minus.png' %}"></a></td>
+       <td><div>{{item.Item}}</td><td>{{item.Topping}}</td> <td>{{item.Price}}</td> 
+       </tr>
+        {% endfor %} 
+        <tr>
+            <td><div>Total</div></td><td>{{shoping_total}}</td> 
+            </tr>
+        </table>
+        <a href="{% url 'order'%}">Order </a>
+    </div>
+{% endblock %}

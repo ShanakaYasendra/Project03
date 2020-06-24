@@ -1,0 +1,97 @@
+{% extends "layout.html" %}
+{% block body%}
+{% load static %}
+
+
+
+<div id='my_orders_container' class='w-50 mx-auto'>
+   
+        <table id='orders'> 
+            <div class=' text-left pr-3'>
+            <tr>
+                <th>Order no:</th> 
+                <th><span class='float-right'>Status: </span></th> 
+            </tr>
+           
+            {% for number in orders %}
+            <tr>
+                <td><a href="{% url 'view_order' number.order_number %}"   id="{{number.order_number}}">
+                <span> {{number.order_number}}</span></td></a>
+                <td><span class='float-right'> <span class='text-warning'>{{number.status}}</span></span></td>
+           
+        </tr>
+            {% endfor %}
+        </div>
+        </table>
+    
+
+
+
+
+        <!-- Modal -->
+<div class="modal fade" id="myModal1" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" name="modal-title"></h4>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <form class='formcontain'action="#" method="POST"m>
+                            {% csrf_token %}
+                            
+                            <fieldset class="form-group">
+                                <div id='checkout' class='list-group text-right '>
+                                    <div id='category' class="list-group text-center">
+                                        <table>
+                                        {% for item in shoping_item %} 
+                                        <tr>
+                                            
+                                       <td><div>{{item.Item}}</td><td>{{item.Price}}</td> 
+                                       </tr>
+                                        {% endfor %} 
+                                        <tr>
+                                            <td><div>Total</div></td><td>{{shoping_total}}</td> 
+                                            </tr>
+                                        </table>
+                                        <a href="{% url 'order'%}">Order </a>
+                                    </div>
+                            </fieldset>
+
+                            <div id="total"></div>
+                            <button type="button" id="addCart" class="btn btn-moz btn-pop">Add to cart</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Reordering</button>
+                    <a href="#" type="button" class="btn btn-success">Close</a>
+                </div>
+            </div>
+    </div>
+</div>
+
+
+<script>
+function request_access($this){
+    console.log("button clicked");
+    var request_data = $this.id;
+    console.log("data: " + request_data);
+    $.ajax({
+        url: 'view_order/'+request_data,
+        
+        success : function(data) {
+            $("#contentBody").html(data);
+            $("#myModal1").modal('show'); 
+            $(this).trigger("reset");
+                        openModal(response);
+        }
+    })
+
+}
+
+</script>
+    {% endblock %}
