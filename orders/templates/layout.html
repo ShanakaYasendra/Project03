@@ -20,7 +20,7 @@
         <div id = 'topbar'>
             <div id='pinochio' class="row">
                <div class="col-lg-4">
-                <!--img src="{% static 'image/pizza.jpg' %}" class= 'top_bar' id='pino' style="align-items: left;"-->
+                
             </div>
             <div class="col-lg-4">
                 <h1 class ='banner'> Pinnochio’s Pizzas<br> & <br>
@@ -50,8 +50,9 @@
                     <ul class="nav justify-content-center">
 
             
-           
-
+                       <li class="nav-item active">
+                        <a href="{% url 'index' %}"  class="nav-link">Home </a>
+                        </li>
             {% if user.is_superuser%}
             <li class="nav-item active">
                 <a href="{% url 'orders_manager' %}"  class="nav-link">Oder Management </a>

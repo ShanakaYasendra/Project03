@@ -50,6 +50,13 @@ class Salads (models.Model):
  
     def __str__(self):
         return f"{self.name}-{self.price}"
+class Deal(models.Model):
+    name= models.CharField(max_length=255)
+    price= models.DecimalField(max_digits=4,decimal_places=2)
+
+    def __str__(self):
+        return f"{self.name}-{self.price}"
+
 
 class DinnerPlatter (models.Model):
     name= models.CharField(max_length=64)
@@ -68,7 +75,7 @@ class Orders(models.Model):
         return f"{self.username}-{self.OrderNo}-{self.OrderdateTime}-{self.Item}-{self.OrderTotal}"
 
 class Items(models.Model):
-    #OrderNo= models.ForeignKey(Orders,on_delete=models.CASCADE)
+    
     OrderNo= models.IntegerField()
     Price= models.DecimalField(max_digits=4,decimal_places=2)
     Item = models.CharField(max_length=255)

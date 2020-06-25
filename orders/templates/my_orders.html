@@ -75,23 +75,4 @@
 </div>
 
 
-<script>
-function request_access($this){
-    console.log("button clicked");
-    var request_data = $this.id;
-    console.log("data: " + request_data);
-    $.ajax({
-        url: 'view_order/'+request_data,
-        
-        success : function(data) {
-            $("#contentBody").html(data);
-            $("#myModal1").modal('show'); 
-            $(this).trigger("reset");
-                        openModal(response);
-        }
-    })
-
-}
-
-</script>
     {% endblock %}

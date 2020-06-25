@@ -9,11 +9,11 @@ from django.db.models import Sum
 import datetime
 
 
-from .models import Category,RegularPizza,SicilianPizza,Salads,Sub,DinnerPlatter,Topping,User_order,Pasta,Orders,Items,Order_counter
+from .models import Category,RegularPizza,SicilianPizza,Salads,Sub,DinnerPlatter,Topping,User_order,Pasta,Orders,Items,Order_counter,Deal
 
 
 counter = Order_counter.objects.first()
-print(counter.counter)
+#print(counter.counter)
 if counter==None:
     set_counter=Order_counter(counter=1)
     set_counter.save()
@@ -193,24 +193,26 @@ def load_cart(request):
 def delete_item(request, rowId):
     try:
         print(rowId)
-        user= request.user,
+        
         deleteItem= Items.objects.filter(id=rowId)
         print(deleteItem)
         deleteItem.delete()
-  
+        user= request.user
         shoping_item= Items.objects.filter(username= user,OrderNo=counter.counter)
+        count_item=Items.objects.filter(OrderNo=counter.counter).count()
         shoping_tottal= Items.objects.filter(username= user,OrderNo=counter.counter).aggregate(Sum('Price')).values()
         shoping_tottal=(float([x for x in shoping_tottal][0]))
     except Exception as e:
         shoping_item =None
         shoping_tottal=None
+        print('hello')
         print(e)
     context={
         "user": request.user,
         "Category": Category.objects.all(),
         "shoping_item": shoping_item,
         "shoping_total": shoping_tottal,
-        "cart_count": shoping_item.count()
+        "cart_count": Items.objects.filter(OrderNo=counter.counter).count()
     }
     return render(request,"shopping_cart.html",context)
 
@@ -243,8 +245,6 @@ def Place_Order(request):
     order= Orders(username=request.user,OrderNo=counter.counter,OrderdateTime=datetime.datetime.now(), OrderTotal=shoping_tottal)
     order.save()
     counter=Order_counter.objects.first()
-    #new_order_number=User_order(user=request.user,order_number=counter.counter)
-    #new_order_number.save()
     counter.counter=counter.counter+1
     counter.save()
     message='Thank You For Ordering'
@@ -297,8 +297,11 @@ def view_order(request ,orderNo):
     user= request.user
     order_details= Items.objects.filter(OrderNo=orderNo)
     shoping_item= Items.objects.filter(username= user,OrderNo=orderNo)
-    shoping_total= Items.objects.filter(username= user,OrderNo=orderNo).aggregate(Sum('Price')).values()
-    shoping_total=(float([x for x in shoping_total][0]))
+    try:
+        shoping_total= Items.objects.filter(username= user,OrderNo=orderNo).aggregate(Sum('Price')).values()
+        shoping_total=(float([x for x in shoping_total][0]))
+    except Exception  as e:
+        shoping_total=0
     print('hi')
     print(shoping_item)
     context={
@@ -320,15 +323,12 @@ def Re_Order(request):
     order= Orders(username=request.user,OrderNo=counter.counter,OrderdateTime=datetime.datetime.now(), OrderTotal=shoping_tottal)
     order.save()
     counter=Order_counter.objects.first()
-    #new_order_number=User_order(user=request.user,order_number=counter.counter)
-    #new_order_number.save()
     counter.counter=counter.counter+1
     counter.save()
     message='Thank You For Ordering'
     context={
         "user": request.user,
         "Category": Category.objects.all(),
-        #"shoping_item": shoping_item,
         "shoping_total": 0,
         "message": message,
         "Order_No" : counter.counter,
@@ -362,5 +362,9 @@ def findTable(category):
     elif category == "Dinner Platters":
         menu=DinnerPlatter.objects.all()
         columns=3
+    elif category=="Deal":
+        menu=Deal.objects.all()
+        columns=2
+        pass
 
     return menu,columns

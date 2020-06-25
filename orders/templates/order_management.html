@@ -18,12 +18,7 @@
                     <td>{{row.status}}</td>
                     <td> <a href="{% url 'complete_order' row.username row.order_number  %}"><span class='float-right mx-2 p-1 bg-info rounded text-white'>Complete order</span></a></td>
                </tr>
-            <!--li class='p-2' >
-               
-                <span>Order no: {{row.order_number}} by {{row.username}}</span>
-               
-                <span class='float-right'>Status: <span class='text-warning'>{{row.status}}</span></span>
-            </li-->
+          
         
             {% endfor %}
         </table>
